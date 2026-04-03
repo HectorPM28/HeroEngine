@@ -11,5 +11,7 @@ public class Program
         Console.WriteLine(warrior.ToString());
         Console.WriteLine(mago.ToString());
         Console.WriteLine(rogue.ToString());
+        ThunderSmash test = new ThunderSmash();
+        Console.WriteLine(test.ToString());
     }
 }
