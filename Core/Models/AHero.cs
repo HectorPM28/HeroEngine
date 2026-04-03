@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using static HeroEngine.Core.UI.UIConfig;
 
 namespace HeroEngine.Core.Models
 {
@@ -50,7 +51,7 @@ namespace HeroEngine.Core.Models
         }
         public void ShowAbilities()
         {
-            var sortedList = Abilities.Values.OrderByDescending(num => num.Rarity).ToList();
+            var sortedList = Abilities.Values.OrderByDescending(num => num.Rarity);
 
             foreach(var ability in sortedList)
             {
