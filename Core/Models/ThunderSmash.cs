@@ -8,12 +8,14 @@ namespace HeroEngine.Core.Models
 {
     public class ThunderSmash : AAbility
     {
-        public ThunderSmash(): base ("Thunder Smash", RandomRarityHelper.GetRandomRarity(), EAbilityType.Attack, 40)
+        private int _damage = 75;
+        public ThunderSmash(): base ("Thunder Smash", RandomRarityHelper.GetRandomRarity(), EAbilityType.Attack, 30)
         {
         }
-        public override void Execute()
+        public override void Execute(AHero hero)
         {
-            throw new NotImplementedException();
+            int newDamage = _damage + (int)Rarity;
+            Console.WriteLine(UIConfig.Abilities.ThunderSmash, hero.Name, newDamage);
         }
     }
 }

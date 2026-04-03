@@ -1,0 +1,21 @@
+﻿using HeroEngine.Core.Models.Enums;
+using HeroEngine.Core.UI;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace HeroEngine.Core.Models
+{
+    public class IronFortress: AAbility
+    {
+        private int _defense = 40;
+        public IronFortress() : base("Iron Fortress", RandomRarityHelper.GetRandomRarity(), EAbilityType.Defense, 20)
+        {
+        }
+        public override void Execute(AHero hero)
+        {
+            int newDefense = _defense + (int)Rarity;
+            Console.WriteLine(UIConfig.Abilities.IronFortress, hero.Name, newDefense);
+        }
+    }
+}
