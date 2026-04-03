@@ -13,8 +13,14 @@ public class Program
         Console.WriteLine(mago.ToString());
         Console.WriteLine(rogue.ToString());
         ThunderSmash Thunder = new ThunderSmash();
+        SecondWind wind = new SecondWind();
+        Wartaunt taunt = new Wartaunt();
         Console.WriteLine(Thunder.ToString());
         warrior.AddAbility(Thunder);
         warrior.UseAbility(warrior.Abilities[Thunder.Name]);
+        warrior.AddAbility(wind);
+        warrior.AddAbility(taunt);
+        warrior.AddAbility(Thunder);
+        warrior.ShowAbilities();
     }
 }

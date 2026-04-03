@@ -48,5 +48,14 @@ namespace HeroEngine.Core.Models
         {
             Abilities[ability.Name].Execute(this);
         }
+        public void ShowAbilities()
+        {
+            var sortedList = Abilities.Values.OrderByDescending(num => num.Rarity).ToList();
+
+            foreach(var ability in sortedList)
+            {
+                Console.WriteLine($"[{ability.Rarity}] {ability.Name} | Type: {ability.Type} | Cost: {ability.Cost}");
+            }
+        }
     }
 }

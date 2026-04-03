@@ -9,7 +9,7 @@ namespace HeroEngine.Core.UI
     {
         private static Random Rnd = new Random();
         private static int MinimumRarity = 1;
-        private static int MaximumRarity = 4;
+        private static int MaximumRarity = 5;
 
         public static ERarities GetRandomRarity()
         {
