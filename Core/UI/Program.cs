@@ -12,7 +12,9 @@ public class Program
         Console.WriteLine(warrior.ToString());
         Console.WriteLine(mago.ToString());
         Console.WriteLine(rogue.ToString());
-        ThunderSmash test = new ThunderSmash();
-        Console.WriteLine(test.ToString());
+        ThunderSmash Thunder = new ThunderSmash();
+        Console.WriteLine(Thunder.ToString());
+        warrior.AddAbility(Thunder);
+        warrior.UseAbility(warrior.Abilities[Thunder.Name]);
     }
 }

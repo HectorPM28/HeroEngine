@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HeroEngine.Core.UI;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -15,6 +16,7 @@ namespace HeroEngine.Core.Models
             set => _hp = (value < 0) ? 0 : value;
         }
         private int _hp = 100;
+        public Dictionary<string, AAbility>  Abilities { get; set; } = [];
 
         public AHero(string name, int level)
         {
@@ -30,6 +32,21 @@ namespace HeroEngine.Core.Models
         protected void CantGetAttacked()
         {
             Console.WriteLine($"{Name} can't get attacked because they're dead");
+        }
+        public void AddAbility(AAbility ability)
+        {
+            if (Abilities.ContainsKey(ability.Name))
+            {
+                Console.WriteLine(UIConfig.AbilityError.AbilityRepeated);
+            }
+            else
+            {
+                Abilities.Add(ability.Name, ability);
+            }
+        }
+        public void UseAbility(AAbility ability)
+        {
+            Abilities[ability.Name].Execute(this);
         }
     }
 }

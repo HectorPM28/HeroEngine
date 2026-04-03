@@ -13,5 +13,9 @@ namespace HeroEngine.Core.UI
             public const string SecondWind = "{0} guides the wind. The party heals {1} hp.";
             public const string WarTaunt = "{0} screams at the enemies. The next hit is stronger!";
         }
+        public static class AbilityError
+        {
+            public const string AbilityRepeated = "This hero already has this ability";
+        }
     }
 }

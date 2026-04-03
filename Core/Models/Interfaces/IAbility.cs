@@ -11,6 +11,6 @@ namespace HeroEngine.Core.Models.Interfaces
         ERarities Rarity { get; }
         EAbilityType Type { get; }
         int Cost { get; }
-        void Execute();
+        void Execute(AHero hero);
     }
 }
