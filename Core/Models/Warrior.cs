@@ -17,7 +17,7 @@ namespace HeroEngine.Core.Models
         }
         public override string ToString()
         {
-            return $"[{this.GetType().Name}] {Name} | Level: {Level} | HP: {Hp}/{MaxHp} | Armor: {Armor}";
+            return base.ToString() + $" | Armor: {Armor}";
 
         }
 

@@ -6,6 +6,19 @@ namespace HeroEngine.Core.UI
 {
     public static class UIConfig
     {
+        public static void ShowHeroes()
+        {
+            Console.WriteLine("1. Warrior\n2. Mage\n3. Rogue");
+            Console.WriteLine("Select hero");
+        }
+        public static void ShowAbilities()
+        {
+            Console.WriteLine("1. Thunder Smash");
+            Console.WriteLine("2. Secon Wind");
+            Console.WriteLine("3. Iron Fortress");
+            Console.WriteLine("4. War Taunt");
+            Console.WriteLine("Select an ability");
+        }
         public static class Abilities
         {
             public const string ThunderSmash = "{0} channels the storm! {1} lightning damage to all enemies!";
@@ -16,6 +29,10 @@ namespace HeroEngine.Core.UI
         public static class AbilityError
         {
             public const string AbilityRepeated = "This hero already has this ability";
+        }
+        public static class InputError
+        {
+            public const string IntError = "Insert a number!";
         }
     }
 }

@@ -16,7 +16,7 @@ namespace HeroEngine.Core.Models
         }
         public override string ToString()
         {
-            return $"[{this.GetType().Name}] {Name} | Level: {Level} | HP: {Hp}/{MaxHp} | Multiplier: {Multiplier}";
+            return base.ToString() + $" | Multiplier: {Multiplier}";
 
         }
         public override int Attack(int damage)

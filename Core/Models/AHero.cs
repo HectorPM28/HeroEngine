@@ -16,13 +16,16 @@ namespace HeroEngine.Core.Models
             get => _hp;
             set => _hp = (value < 0) ? 0 : value;
         }
-        private int _hp = 100;
-        public Dictionary<string, AAbility>  Abilities { get; set; } = [];
+        private int _hp = 100;        
 
         public AHero(string name, int level)
         {
             Name = name;
             Level = level;
+        }
+        public override string ToString()
+        {
+            return $"[{this.GetType().Name}] {Name} | Level: {Level} | HP: {Hp}/{MaxHp}";
         }
         public abstract int Attack(int damage);
         public abstract void GetAttacked(int damage);
@@ -33,30 +36,6 @@ namespace HeroEngine.Core.Models
         protected void CantGetAttacked()
         {
             Console.WriteLine($"{Name} can't get attacked because they're dead");
-        }
-        public void AddAbility(AAbility ability)
-        {
-            if (Abilities.ContainsKey(ability.Name))
-            {
-                Console.WriteLine(UIConfig.AbilityError.AbilityRepeated);
-            }
-            else
-            {
-                Abilities.Add(ability.Name, ability);
-            }
-        }
-        public void UseAbility(AAbility ability)
-        {
-            Abilities[ability.Name].Execute(this);
-        }
-        public void ShowAbilities()
-        {
-            var sortedList = Abilities.Values.OrderByDescending(num => num.Rarity);
-
-            foreach(var ability in sortedList)
-            {
-                Console.WriteLine($"[{ability.Rarity}] {ability.Name} | Type: {ability.Type} | Cost: {ability.Cost}");
-            }
         }
     }
 }

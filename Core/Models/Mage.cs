@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HeroEngine.Core.UI;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -9,6 +10,7 @@ namespace HeroEngine.Core.Models
         public int MaxMana { get; set; }
         public int Mana { get; set; }
         public int ArcaneLevel { get; set; }
+        public Dictionary<string, AAbility> Abilities { get; set; } = [];
 
         public Mage (string name, int level, int mana, int arcaneLevel): base(name, level)
         {
@@ -20,7 +22,7 @@ namespace HeroEngine.Core.Models
         }
         public override string ToString()
         {
-            return $"[{this.GetType().Name}] {Name} | Level: {Level} | HP: {Hp}/{MaxHp} | Mana: {Mana}/{MaxMana}";
+            return base.ToString() + $" | Mana: {Mana}/{MaxMana} | ArcaneLevel: {ArcaneLevel}";
 
         }
         public override int Attack(int damage)
@@ -47,6 +49,28 @@ namespace HeroEngine.Core.Models
                 Console.WriteLine($"{Name} gets attacked. Loses {damage} hp");
                 Hp -= damage;
             }
+        }
+        public void AddAbility(AAbility ability)
+        {
+            if (Abilities.ContainsKey(ability.Name))
+            {
+                Console.WriteLine(UIConfig.AbilityError.AbilityRepeated);
+                Thread.Sleep(1000);
+            }
+            else
+            {
+                Abilities.Add(ability.Name, ability);
+            }
+        }
+        public void UseAbility(AAbility ability)
+        {
+            Abilities[ability.Name].Execute(this);
+        }
+        public void ShowAbilities()
+        {
+            List<AAbility> sortedList = Abilities.Values.OrderByDescending(num => num.Rarity).ToList();
+
+            sortedList.ForEach(e => Console.WriteLine(e.ToString()));
         }
     }
 }
