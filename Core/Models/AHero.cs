@@ -6,36 +6,24 @@ using static HeroEngine.Core.UI.UIConfig;
 
 namespace HeroEngine.Core.Models
 {
-    public abstract class AHero
+    public abstract class AHero: AEntity
     {
-        public string Name { get; set; }
         public int Level { get; set; }
-        public int MaxHp { get; set; } = 100;
-        public int Hp
-        {
-            get => _hp;
-            set => _hp = (value < 0) ? 0 : value;
-        }
-        private int _hp = 100;        
 
-        public AHero(string name, int level)
+        public AHero(string name, int hp, int level) : base(name, hp)
         {
-            Name = name;
             Level = level;
+            MaxHp += level;
+            Hp += level;
         }
         public override string ToString()
         {
             return $"[{this.GetType().Name}] {Name} | Level: {Level} | HP: {Hp}/{MaxHp}";
         }
-        public abstract int Attack(int damage);
-        public abstract void GetAttacked(int damage);
-        protected void CantAttack()
+        public virtual void AddAbility(AAbility ability)
         {
-            Console.WriteLine($"{Name} can't attack because they're dead");
-        }
-        protected void CantGetAttacked()
-        {
-            Console.WriteLine($"{Name} can't get attacked because they're dead");
+            Console.WriteLine($"{Name} cannot learn abilities.");
+            Thread.Sleep(1000);
         }
     }
 }

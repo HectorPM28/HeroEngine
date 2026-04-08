@@ -1,22 +1,22 @@
-﻿using HeroEngine.Core.UI;
+﻿using HeroEngine.Core.Models.Interfaces;
+using HeroEngine.Core.UI;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace HeroEngine.Core.Models
 {
-    public class Mage: AHero
+    public class Mage: AHero, IAbilityUser
     {       
         public int MaxMana { get; set; }
         public int Mana { get; set; }
         public int ArcaneLevel { get; set; }
         public Dictionary<string, AAbility> Abilities { get; set; } = [];
+        public static int BaseMageHp = 100;
 
-        public Mage (string name, int level, int mana, int arcaneLevel): base(name, level)
+        public Mage (string name,int hp, int level, int mana, int arcaneLevel): base(name, hp, level)
         {
-            MaxMana = mana + level;
-            MaxHp += level;
-            Hp += level;
+            MaxMana = mana + level;            
             Mana = mana + level;
             ArcaneLevel = arcaneLevel;
         }
@@ -50,7 +50,7 @@ namespace HeroEngine.Core.Models
                 Hp -= damage;
             }
         }
-        public void AddAbility(AAbility ability)
+        public override void AddAbility(AAbility ability)
         {
             if (Abilities.ContainsKey(ability.Name))
             {

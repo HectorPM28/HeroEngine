@@ -11,6 +11,14 @@ namespace HeroEngine.Core.UI
             Console.WriteLine("1. Warrior\n2. Mage\n3. Rogue");
             Console.WriteLine("Select hero");
         }
+        public static void ShowMenu()
+        {
+            Console.WriteLine("What do you wanna do?");
+            Console.WriteLine("1. See party");
+            Console.WriteLine("2. Assign abilities");
+            Console.WriteLine("3. Fight enemies");
+            Console.WriteLine("4. Finish adventure");
+        }
         public static void ShowAbilities()
         {
             Console.WriteLine("1. Thunder Smash");

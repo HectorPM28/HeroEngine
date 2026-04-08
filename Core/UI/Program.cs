@@ -6,27 +6,15 @@ public class Program
 {
     public static void Main()
     {
-        string opt = "", heroName, menuOp = "", abilityOpt = "", heroSelected = "", abilitySelected = "";
-        int minHeroVal = 0, maxHeroVal = 4, menuSelected = 0, minMenuVal = 0, maxMenuVal = 5, heroSelectedInt, abilitySelectedInt, minAbilityVal = 0, maxAbilityVal = 5;
+        int menuSelected = 0, minMenuVal = 0, maxMenuVal = 5;
 
         List<AHero> party = new List<AHero>(3);
-        
-        for (int i = 0; i < 3; i++)
-        {            
-            heroName = NameHero();
-            UIConfig.ShowHeroes();
-            party.Add(SelectHero(IntParse(opt, minHeroVal, maxHeroVal), heroName));
-        }
+        CreateParty(party);
         Console.Clear();
-        Console.WriteLine(party.Count);
         do
         {
-            Console.WriteLine("What do you wanna do?");
-            Console.WriteLine("1. See party");
-            Console.WriteLine("2. Assign abilities");
-            Console.WriteLine("3. Fight enemies");
-            Console.WriteLine("4. Finish adventure");
-            menuSelected = IntParse(menuOp, minMenuVal, maxMenuVal);
+            UIConfig.ShowMenu();
+            menuSelected = IntParse(minMenuVal, maxMenuVal);
 
             switch (menuSelected)
             {
@@ -36,21 +24,7 @@ public class Program
                     Console.ReadKey();
                     break;
                 case 2:
-                    ShowParty(party);
-                    Console.WriteLine("Who will be granted an ability");
-
-                    heroSelectedInt = IntParse(heroSelected, 0, party.Count + 1);
-                    if (party[heroSelectedInt - 1] is Mage mage)
-                    {
-                        UIConfig.ShowAbilities();
-                        abilitySelectedInt = IntParse(abilitySelected, minAbilityVal, maxAbilityVal);
-                        mage.AddAbility(SelectAbility(abilitySelectedInt));
-                    }
-                    else
-                    {
-                        Console.WriteLine("Only Mages can get abilities");
-                        Thread.Sleep(1500);
-                    }                                        
+                    AssignAbilityToHero(party);                                     
                     break;
                 case 3:
                     break;
@@ -58,28 +32,52 @@ public class Program
             Console.Clear();
         } while (menuSelected != 4);
     }
+    public static void AssignAbilityToHero(List<AHero> party)
+    {
+        int heroSelectedInt, abilitySelectedInt, minAbilityVal = 0, maxAbilityVal = 5;
+        ShowParty(party);
+        Console.WriteLine("Who will be granted an ability");
+
+        heroSelectedInt = IntParse(0, party.Count + 1);
+        UIConfig.ShowAbilities();
+        abilitySelectedInt = IntParse(minAbilityVal, maxAbilityVal);
+        party[heroSelectedInt - 1].AddAbility(SelectAbility(abilitySelectedInt));
+    }
+    public static void CreateParty(List<AHero> party)
+    {
+        string heroName;
+        int minHeroVal = 0, maxHeroVal = 4;
+
+        for (int i = 0; i < 3; i++)
+        {
+            heroName = NameHero();
+            UIConfig.ShowHeroes();
+            party.Add(SelectHero(IntParse(minHeroVal, maxHeroVal), heroName));
+        }
+    }
     public static void ShowParty(List<AHero> party)
     {
-        foreach (AHero hero in party)
+        for(int i = 0; i < party.Count; i++)
         {
-            if (hero is Mage isMage)
+            if (party[i] is Mage isMage)
             {
-                Console.WriteLine(isMage.ToString());
+                Console.WriteLine($"{i + 1}. {isMage.ToString()}");
                 isMage.ShowAbilities();
             }
             else
             {
-                Console.WriteLine(hero.ToString());
+                Console.WriteLine($"{i + 1}. {party[i].ToString()}");
             }
         }
     }
-    public static int IntParse(string opt, int minVal, int maxVal)
+    public static int IntParse(int minVal, int maxVal)
     {
         bool correctOpt = false;
+        string num = "";
         do
         {            
-            opt = Console.ReadLine();
-            if (int.TryParse(opt, out int choosed))
+            num = Console.ReadLine();
+            if (int.TryParse(num, out int choosed))
             {
                 if (choosed < maxVal && choosed > minVal)
                 {
@@ -126,16 +124,16 @@ public class Program
             case 1:
                 Console.WriteLine("Give a war scream to your warrior");
                 warTaunt = Console.ReadLine();
-                Warrior warrior = new Warrior(name, 1, 45, warTaunt);
+                Warrior warrior = new Warrior(name,Warrior.WarriorBaseHp, 1, 45, warTaunt);
                 return warrior;
             case 2:
-                Mage mage = new Mage(name, 1, 100, 1);
+                Mage mage = new Mage(name,Mage.BaseMageHp, 1, 100, 1);
                 return mage;
             case 3:
-                Rogue rogue = new Rogue(name, 1, 5);
+                Rogue rogue = new Rogue(name,Rogue.RogueBaseHp, 1, 5);
                 return rogue;
         }
-        Warrior test = new Warrior(name, 1, 45, "ScreamLess");
+        Warrior test = new Warrior(name,Warrior.WarriorBaseHp, 1, 45, "ScreamLess");
         return test;
     }
     public static string NameHero()
