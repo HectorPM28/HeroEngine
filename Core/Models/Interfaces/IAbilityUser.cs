@@ -8,7 +8,7 @@ namespace HeroEngine.Core.Models.Interfaces
     {
         Dictionary<string, AAbility> Abilities { get; set; }
         int Mana { get; set; }
-        int MaxMana { get; set; };
+        int MaxMana { get; set; }
         void AddAbility(AAbility ability);
         void ShowAbilities();
     }

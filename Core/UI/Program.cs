@@ -31,6 +31,7 @@ public class Program
                     break;
                 case 3:
                     StartCombat(party);
+                    RestartPartyAfterBattle(party);
                     Console.ReadKey();
                     break;
             }
@@ -50,10 +51,14 @@ public class Program
 
         do
         {
-            if (party[count].DeadState) count++;
+            if (count >= party.Count) count = 0;
+            if (party[count].DeadState)
+            {
+                count = (count + 1) % party.Count;
+            }
             CombatRound(party, enemies, count);
-            count++;
-            if (count > 2) count = 0;
+            count = (count + 1) % party.Count;
+
         } while (CheckPartyState(party) && CheckPartyState(enemies));
 
         Console.WriteLine(CheckPartyLoser(party) ? "Your party died" : "Your enemies died");
@@ -111,7 +116,6 @@ public class Program
     {
         const int minEnemyVal = 0;
         int enemyChoosen, heroChoosen;
-        bool heroAlive = party[num].DeadState;
 
         ShowCombatParticipants(party, enemies);
         
@@ -119,13 +123,13 @@ public class Program
         enemyChoosen = IntParse(minEnemyVal, enemies.Count + 1) -1;
         enemies[enemyChoosen].GetAttacked(party[num].Attack(RandomNumsHelper.GetRandomDamage()));
 
-        while (heroAlive)
+        heroChoosen = RandomNumsHelper.GetRandomHero(party);
+        while (party[heroChoosen].DeadState)
         {
             heroChoosen = RandomNumsHelper.GetRandomHero(party);
-            heroAlive = party[heroChoosen].DeadState;
         }
         num = CheckEnemyAliveAttack(enemies, num);
-        party[RandomNumsHelper.GetRandomHero(party)].GetAttacked(enemies[num].Attack(RandomNumsHelper.GetRandomDamage()));
+        party[heroChoosen].GetAttacked(enemies[num].Attack(RandomNumsHelper.GetRandomDamage()));
     }
     public static void CreateEnemyTeam(List<AEnemy> enemies)
     {
@@ -160,7 +164,7 @@ public class Program
         ShowPartyToSelect(party);
         Console.WriteLine("Who will be granted an ability");
 
-        heroSelectedInt = IntParse(0, party.Count + 1);
+        heroSelectedInt = IntParse(0, party.Count + 1) -1;
         UIConfig.ShowAbilities();
         abilitySelectedInt = IntParse(minAbilityVal, maxAbilityVal) -1;
         party[heroSelectedInt].AddAbility(SelectAbility(abilitySelectedInt));
