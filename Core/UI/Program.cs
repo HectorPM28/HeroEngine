@@ -39,33 +39,92 @@ public class Program
     }
     public static void StartCombat(List<AHero> party)
     {
+        int count = 0;
         List<AEnemy> enemies = new List<AEnemy>(3);
+
         CreateEnemyTeam(enemies);
         Console.WriteLine("Enemies found!");
         ShowPartyToSelect(enemies);
         Console.ReadKey();
+        Console.Clear();
 
         do
-        {            
-            CombatRound(party, enemies, 1);
-        } while (!CheckPartyState(party) || !CheckPartyState(enemies));         
+        {
+            if (party[count].DeadState) count++;
+            CombatRound(party, enemies, count);
+            count++;
+            if (count > 2) count = 0;
+        } while (CheckPartyState(party) && CheckPartyState(enemies));
+
+        Console.WriteLine(CheckPartyLoser(party) ? "Your party died" : "Your enemies died");
+    }
+    public static int CheckHeroAliveToGetAttacked<T>(List<AHero> party, int num)
+    {
+        if (!party[num].DeadState)
+        {
+            return num;
+        }
+
+        return RandomNumsHelper.GetRandomHero(party);
+    }
+    public static int CheckEnemyAliveAttack(List<AEnemy> party, int num)
+    {
+        if (!party[num].DeadState)
+        {
+            return num;
+        }
+        num++;
+        if ( num > 2)
+        {
+            num = 0;
+        }
+        return num;
+    }
+    public static bool CheckPartyLoser<T>(List<T> party) where T: AEntity
+    {
+        if (!CheckPartyState(party)) return true;
+        return false;
     }
     public static bool CheckPartyState<T>(List<T> party) where T : AEntity
     {
-        foreach (T entity in party) if (entity.Hp > 0) return false;
-        return true;
+        foreach (T entity in party) if (entity.Hp > 0) return true;
+        return false;
+    }
+    public static void ShowCombatParticipants(List<AHero> party, List<AEnemy> enemies)
+    {
+        ShowPartyToSelect(party);
+        Console.WriteLine();
+        ShowPartyToSelect(enemies);
+    }
+    public static void RestartPartyAfterBattle(List<AHero> party)
+    {
+        foreach(AHero hero in party)
+        {
+            hero.Hp = hero.MaxHp;
+            if (hero is IAbilityUser isUser)
+            {
+                isUser.Mana = isUser.MaxMana;
+            }
+        }
     }
     public static void CombatRound(List<AHero> party, List<AEnemy> enemies, int num)
     {
-        const int minEnemyVal = -1;
-        int enemyChoosen;
+        const int minEnemyVal = 0;
+        int enemyChoosen, heroChoosen;
+        bool heroAlive = party[num].DeadState;
 
-        ShowPartyHeroes(party);
-        ShowPartyToSelect(enemies);
+        ShowCombatParticipants(party, enemies);
         
         Console.WriteLine($"{party[num].Name} is attacking. Choose an enemy to attack");
-        enemyChoosen = IntParse(minEnemyVal, enemies.Count);
+        enemyChoosen = IntParse(minEnemyVal, enemies.Count + 1) -1;
         enemies[enemyChoosen].GetAttacked(party[num].Attack(RandomNumsHelper.GetRandomDamage()));
+
+        while (heroAlive)
+        {
+            heroChoosen = RandomNumsHelper.GetRandomHero(party);
+            heroAlive = party[heroChoosen].DeadState;
+        }
+        num = CheckEnemyAliveAttack(enemies, num);
         party[RandomNumsHelper.GetRandomHero(party)].GetAttacked(enemies[num].Attack(RandomNumsHelper.GetRandomDamage()));
     }
     public static void CreateEnemyTeam(List<AEnemy> enemies)
@@ -103,8 +162,8 @@ public class Program
 
         heroSelectedInt = IntParse(0, party.Count + 1);
         UIConfig.ShowAbilities();
-        abilitySelectedInt = IntParse(minAbilityVal, maxAbilityVal);
-        party[heroSelectedInt - 1].AddAbility(SelectAbility(abilitySelectedInt));
+        abilitySelectedInt = IntParse(minAbilityVal, maxAbilityVal) -1;
+        party[heroSelectedInt].AddAbility(SelectAbility(abilitySelectedInt));
     }
     public static void CreateParty(List<AHero> party)
     {

@@ -7,11 +7,22 @@ namespace HeroEngine.Core.Models
     public abstract class AEntity
     {
         public int MaxHp { get; set; } = 100;
-        public bool DeadState { get; set; } = false;
+        public bool DeadState { get; private set; } = false;
         public int Hp
         {
             get => _hp;
-            set => _hp = (value < 0) ? 0 : value;
+            set
+            {
+                _hp = (value < 0) ? 0 : value;
+                if (_hp == 0)
+                {
+                    DeadState = true;
+                }
+                else
+                {
+                    DeadState = false;
+                }
+            }
         }
         private int _hp;
         public AEntity(int hp)

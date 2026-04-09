@@ -16,7 +16,7 @@ namespace HeroEngine.Core.Models
         }
         public override void GetAttacked(int damage)
         {
-            if (Hp < 0)
+            if (Hp <= 0)
             {
                 CantGetAttacked();
             }
