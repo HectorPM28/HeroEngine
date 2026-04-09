@@ -45,7 +45,7 @@ public class Program
 
         CreateEnemyTeam(enemies);
         Console.WriteLine("Enemies found!");
-        ShowPartyToSelect(enemies);
+        ShowListToSelect(enemies);
         Console.ReadKey();
         Console.Clear();
 
@@ -97,9 +97,9 @@ public class Program
     }
     public static void ShowCombatParticipants(List<AHero> party, List<AEnemy> enemies)
     {
-        ShowPartyToSelect(party);
+        ShowListToSelect(party);
         Console.WriteLine();
-        ShowPartyToSelect(enemies);
+        ShowListToSelect(enemies);
     }
     public static void RestartPartyAfterBattle(List<AHero> party)
     {
@@ -121,7 +121,15 @@ public class Program
         
         Console.WriteLine($"{party[num].Name} is attacking. Choose an enemy to attack");
         enemyChoosen = IntParse(minEnemyVal, enemies.Count + 1) -1;
-        enemies[enemyChoosen].GetAttacked(party[num].Attack(RandomNumsHelper.GetRandomDamage()));
+
+        if (party[num] is IAbilityUser isUser)
+        {
+            AbilityUserChoosesTypeAttack(isUser, party, enemies, num, enemyChoosen);
+        }
+        else
+        {
+            enemies[enemyChoosen].GetAttacked(party[num].Attack(RandomNumsHelper.GetRandomDamage()));
+        }
 
         heroChoosen = RandomNumsHelper.GetRandomHero(party);
         while (party[heroChoosen].DeadState)
@@ -130,6 +138,47 @@ public class Program
         }
         num = CheckEnemyAliveAttack(enemies, num);
         party[heroChoosen].GetAttacked(enemies[num].Attack(RandomNumsHelper.GetRandomDamage()));
+    }
+    public static void AbilityUserChoosesTypeAttack(IAbilityUser isUser, List<AHero> party, List<AEnemy> enemies, int num, int enemyChoosen)
+    {
+        const int minOpt = 0;
+        int opt, maxOpt = 2;
+
+        Console.WriteLine("How do you want to attack");
+        Console.WriteLine("1. Normal attack");
+        if (isUser.Abilities.Count > 0)
+        {
+            maxOpt = 3;
+            Console.WriteLine("2. Use ability");
+        }
+        opt = IntParse(minOpt, maxOpt);
+
+        switch (opt)
+        {
+            case 1:
+                enemies[enemyChoosen].GetAttacked(party[num].Attack(RandomNumsHelper.GetRandomDamage()));
+                break;
+            case 2:
+                CastSpell(party[num], party, enemies);
+                break;
+        }
+    }
+    public static void CastSpell(AHero user, List<AHero> party, List<AEnemy> enemies)
+    {
+        if (user is IAbilityUser abilityUser)
+        {
+            List<string> abilityNames = abilityUser.Abilities.Keys.ToList();
+
+            Console.WriteLine("Choose an ability:");
+            abilityUser.ShowAbilities();
+
+            int selection = IntParse(-1, abilityNames.Count);
+            string abilityName = abilityNames[selection];
+
+            AAbility ability = abilityUser.Abilities[abilityName];
+            ability.Execute(party, enemies, user);
+            abilityUser.Mana -= ability.Cost;
+        }
     }
     public static void CreateEnemyTeam(List<AEnemy> enemies)
     {
@@ -161,13 +210,13 @@ public class Program
         const int minAbilityVal = 0, maxAbilityVal = 5;
         int heroSelectedInt, abilitySelectedInt;
 
-        ShowPartyToSelect(party);
+        ShowListToSelect(party);
         Console.WriteLine("Who will be granted an ability");
 
         heroSelectedInt = IntParse(0, party.Count + 1) -1;
         UIConfig.ShowAbilities();
         abilitySelectedInt = IntParse(minAbilityVal, maxAbilityVal) -1;
-        party[heroSelectedInt].AddAbility(SelectAbility(abilitySelectedInt));
+        party[heroSelectedInt].AddAbility(SelectAbility(abilitySelectedInt + 1));
     }
     public static void CreateParty(List<AHero> party)
     {
@@ -179,7 +228,7 @@ public class Program
             party.Add(SelectHero(IntParse(minHeroVal, maxHeroVal)));
         }
     }
-    public static void ShowPartyToSelect<T>(List<T> party)
+    public static void ShowListToSelect<T>(List<T> party)
     {
         for (int i = 0; i < party.Count; i++)
         {      

@@ -24,7 +24,7 @@ namespace HeroEngine.Core.Models
             Cost = cost + (int) rarity;
         }
 
-        public abstract void Execute(AHero hero);
+        public abstract void Execute(List<AHero> party, List<AEnemy>enemies, AHero hero);
         public override string ToString()
         {
             return $"[{Rarity}] {Name} | Type: {Type} | Cost: {Cost}";

@@ -49,15 +49,14 @@ namespace HeroEngine.Core.Models
                 Abilities.Add(ability.Name, ability);
             }
         }
-        public void UseAbility(AAbility ability)
-        {
-            Abilities[ability.Name].Execute(this);
-        }
         public void ShowAbilities()
         {
             List<AAbility> sortedList = Abilities.Values.OrderByDescending(num => num.Rarity).ToList();
 
-            sortedList.ForEach(e => Console.WriteLine(e.ToString()));
+            for (int i = 0; i < sortedList.Count; i++)
+            {
+                Console.WriteLine($"{i}. {sortedList[i].ToString()}");
+            }
         }
     }
 }
