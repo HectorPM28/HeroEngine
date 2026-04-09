@@ -1,19 +1,18 @@
-﻿using HeroEngine.Core.Models.Enums;
+﻿using HeroEngine.Core.Models;
+using HeroEngine.Core.Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace HeroEngine.Core.UI
 {
-    public static class RandomRarityHelper
+    public static class RandomNumsHelper
     {
         private static Random Rnd = new Random();
-        private static int MinimumRarity = 1;
-        private static int MaximumRarity = 5;
 
         public static ERarities GetRandomRarity()
         {
-            int randomNum = Rnd.Next(MinimumRarity, MaximumRarity);
+              int MinimumRarity = 1, MaximumRarity = 5, randomNum = Rnd.Next(MinimumRarity, MaximumRarity);
 
             switch (randomNum)
             {
@@ -28,6 +27,16 @@ namespace HeroEngine.Core.UI
                 default:
                     return ERarities.Common;
             }
+        }
+        public static int GetRandomDamage()
+        {
+            int minDamage = 1, maxDamage = 21, damage = Rnd.Next(minDamage, maxDamage);
+            return damage;
+        }
+        public static int GetRandomHero(List<AHero> party)
+        {
+            int minHeroVal = 0, choosenHero = Rnd.Next(minHeroVal, party.Count);
+            return choosenHero;
         }
     }
 }

@@ -20,7 +20,7 @@ namespace HeroEngine.Core.Models
         }
         public override int Attack(int damage)
         {
-            if (Hp < 0)
+            if (Hp <= 0)
             {
                 CantAttack();
                 return 0;
@@ -28,19 +28,6 @@ namespace HeroEngine.Core.Models
             else
             {
                 return damage * Multiplier;
-            }
-        }
-
-        public override void GetAttacked(int damage)
-        {
-            if (Hp < 0)
-            {
-                CantGetAttacked();
-            }
-            else
-            {
-                Console.WriteLine($"{Name} gets attacked. Loses {damage} hp");
-                Hp -= damage;
             }
         }
     }

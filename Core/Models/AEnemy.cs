@@ -6,13 +6,25 @@ namespace HeroEngine.Core.Models
 {
     public abstract class AEnemy: AEntity
     {
-        protected AEnemy(string name, int hp) : base(name, hp)
+        protected AEnemy(int hp) : base(hp)
         {
         }
 
         public override string ToString()
         {
-            return $"[{GetType().Name}] | HP: {Hp}/{MaxHp}";
+            return $"[{GetType().Name}] HP: {Hp}/{MaxHp}";
+        }
+        public override void GetAttacked(int damage)
+        {
+            if (Hp < 0)
+            {
+                CantGetAttacked();
+            }
+            else
+            {
+                Console.WriteLine($"{GetType().Name} gets attacked. Loses {damage} hp");
+                Hp -= damage;
+            }
         }
     }
 }

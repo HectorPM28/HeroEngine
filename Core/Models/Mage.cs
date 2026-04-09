@@ -27,7 +27,7 @@ namespace HeroEngine.Core.Models
         }
         public override int Attack(int damage)
         {
-            if (Hp < 0)
+            if (Hp <= 0)
             {
                 CantAttack();
                 return 0;
@@ -36,20 +36,7 @@ namespace HeroEngine.Core.Models
             {
                 return damage * 2;
             }
-        }
-
-        public override void GetAttacked(int damage)
-        {
-            if (Hp < 0)
-            {
-                CantGetAttacked();
-            }
-            else
-            {
-                Console.WriteLine($"{Name} gets attacked. Loses {damage} hp");
-                Hp -= damage;
-            }
-        }
+        }        
         public override void AddAbility(AAbility ability)
         {
             if (Abilities.ContainsKey(ability.Name))

@@ -9,7 +9,7 @@ namespace HeroEngine.Core.Models
     public class IronFortress: AAbility
     {
         private int _defense = 40;
-        public IronFortress() : base("Iron Fortress", RandomRarityHelper.GetRandomRarity(), EAbilityType.Defense, 20)
+        public IronFortress() : base("Iron Fortress", RandomNumsHelper.GetRandomRarity(), EAbilityType.Defense, 20)
         {
         }
         public override void Execute(AHero hero)

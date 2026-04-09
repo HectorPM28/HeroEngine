@@ -22,7 +22,7 @@ namespace HeroEngine.Core.Models
 
         public override int Attack(int damage)
         {
-            if (Hp < 0)
+            if (Hp <= 0)
             {
                 CantAttack();
                 return 0;

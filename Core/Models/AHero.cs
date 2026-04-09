@@ -9,12 +9,14 @@ namespace HeroEngine.Core.Models
     public abstract class AHero: AEntity
     {
         public int Level { get; set; }
+        public string Name { get; set; }
 
-        public AHero(string name, int hp, int level) : base(name, hp)
+        public AHero(string name, int hp, int level) : base(hp)
         {
             Level = level;
             MaxHp += level;
             Hp += level;
+            Name = name;
         }
         public override string ToString()
         {
@@ -24,6 +26,26 @@ namespace HeroEngine.Core.Models
         {
             Console.WriteLine($"{Name} cannot learn abilities.");
             Thread.Sleep(1000);
+        }
+        public override void CantAttack()
+        {
+            Console.WriteLine($"{Name} can't attack because they're dead");
+        }
+        public override void CantGetAttacked()
+        {
+            Console.WriteLine($"{Name} can't get attacked because they're dead");
+        }
+        public override void GetAttacked(int damage)
+        {
+            if (Hp < 0)
+            {
+                CantGetAttacked();
+            }
+            else
+            {
+                Console.WriteLine($"{Name} gets attacked. Loses {damage} hp");
+                Hp -= damage;
+            }
         }
     }
 }
