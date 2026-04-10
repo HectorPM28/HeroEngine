@@ -10,6 +10,10 @@ namespace HeroEngine.Core.UI
     {
         private static Random Rnd = new Random();
 
+        /// <summary>
+        /// Generates a random rarity for an ability
+        /// </summary>
+        /// <returns>Returns a rarity for an avility</returns>
         public static ERarities GetRandomRarity()
         {
               int MinimumRarity = 1, MaximumRarity = 5, randomNum = Rnd.Next(MinimumRarity, MaximumRarity);
@@ -28,11 +32,22 @@ namespace HeroEngine.Core.UI
                     return ERarities.Common;
             }
         }
+
+        /// <summary>
+        /// Generates a random damage of a d20
+        /// </summary>
+        /// <returns>Returns an Int for a damage</returns>
         public static int GetRandomDamage()
         {
             int minDamage = 1, maxDamage = 21, damage = Rnd.Next(minDamage, maxDamage);
             return damage;
         }
+
+        /// <summary>
+        /// Chooses a random AHero from a list
+        /// </summary>
+        /// <param name="party"></param>
+        /// <returns>Returns index from AHero</returns>
         public static int GetRandomHero(List<AHero> party)
         {
             int minHeroVal = 0, choosenHero = Rnd.Next(minHeroVal, party.Count);

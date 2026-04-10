@@ -3,6 +3,7 @@ using HeroEngine.Core.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace HeroEngine.Core.UI
 {
@@ -15,7 +16,7 @@ namespace HeroEngine.Core.UI
         /// <param name="party">List of AHero that will fight</param>
         public static void StartCombat(List<AHero> party)
         {
-            int count = 0;
+            int count = 0, round = 1;
             List<AEnemy> enemies = new List<AEnemy>(3);
 
             CreateEnemyTeam(enemies);
@@ -31,9 +32,9 @@ namespace HeroEngine.Core.UI
                 {
                     count = (count + 1) % party.Count;
                 }
-                CombatRound(party, enemies, count);
+                CombatRound(party, enemies, count, round);
                 count = (count + 1) % party.Count;
-
+                round++;
             } while (CheckPartyState(party) && CheckPartyState(enemies));
 
             Console.WriteLine(CheckPartyState(party) ? UIConfig.Combat.PartyDied : UIConfig.Combat.EnemiesDied);
@@ -56,6 +57,81 @@ namespace HeroEngine.Core.UI
         }
 
         /// <summary>
+        /// Gives the given data to a .txt file to create a bat log
+        /// </summary>
+        /// <param name="party">List of AHero participating in battle</param>
+        /// <param name="enemies">List of AEnemy participating in battle</param>
+        /// <param name="round">Number of the round</param>
+        /// <param name="textHero">How hero acted towards the enemy</param>
+        /// <param name="textEnemy">How enemy acted towards the hero</param>
+        public static void GiveDataToLog(List<AHero> party, List<AEnemy> enemies, int round, string textHero, string textEnemy)
+        {
+            CombatLog.InsertInfoInLog(textHero, textEnemy, round, GetLivingCount(party), GetLivingCount(enemies));
+        }
+
+        /// <summary>
+        /// Starts a combat round
+        /// </summary>
+        /// <param name="party">List of AHero participating in the round</param>
+        /// <param name="enemies">List of AEnemy participating in the round</param>
+        /// <param name="num">Index of hero choosen</param>
+        /// <param name="round">Number of the round</param>
+        public static void CombatRound(List<AHero> party, List<AEnemy> enemies, int num, int round)
+        {
+            ShowCombatParticipants(party, enemies);
+
+            string textHero = ExecuteHeroAction(party, enemies, num);
+
+            int heroChoosen = GetRandomLivingHeroIndex(party);
+
+            num = CheckEnemyAliveAttack(enemies, num);
+
+            int damageEnemy = RandomNumsHelper.GetRandomDamage();
+            party[heroChoosen].GetAttacked(enemies[num].Attack(damageEnemy));
+
+            string textEnemy = $"[{enemies[num].GetType().Name}] > {party[num].Name} -> {damageEnemy}dmg";
+
+            GiveDataToLog(party, enemies, round, textHero, textEnemy);
+        }
+
+        /// <summary>
+        /// Action of the hero in play
+        /// </summary>
+        /// <param name="party">List where the Hero is</param>
+        /// <param name="enemies">List of enemies that may be attacked</param>
+        /// <param name="num">Index of hero choosen</param>
+        /// <returns></returns>
+        private static string ExecuteHeroAction(List<AHero> party, List<AEnemy> enemies, int num)
+        {
+            Console.WriteLine(UIConfig.Combat.HeroAttacking, party[num].Name);
+            int enemyChoosen = IntParse(0, enemies.Count + 1) - 1;
+
+            if (party[num] is IAbilityUser isUser)
+            {
+                AbilityUserChoosesTypeAttack(isUser, party, enemies, num, enemyChoosen);
+                return $"{party[num].Name} used an ability";
+            }
+
+            int damageHero = RandomNumsHelper.GetRandomDamage();
+            enemies[enemyChoosen].GetAttacked(party[num].Attack(damageHero));
+            return $"[{party[num].GetType().Name}] {party[num].Name} > {enemies[enemyChoosen]} -> {damageHero}dmg";
+        }
+
+        /// <summary>
+        /// Changes enemy target if it was gonna attack a dead hero
+        /// </summary>
+        /// <param name="party"></param>
+        /// <returns></returns>
+        private static int GetRandomLivingHeroIndex(List<AHero> party)
+        {
+            var livingIndices = party.Select((h, i) => new { h, i })
+                                     .Where(x => !x.h.DeadState)
+                                     .Select(x => x.i).ToList();
+
+            return livingIndices[RandomNumsHelper.GetRandomHero(party)];
+        }
+
+        /// <summary>
         /// Checks if an enemy is avaliable to attack, if its not, changes attacking enemy.
         /// </summary>
         /// <param name="party">List of attacking AEnemy</param>
@@ -73,6 +149,19 @@ namespace HeroEngine.Core.UI
                 num = 0;
             }
             return num;
+        }
+
+        /// <summary>
+        /// Calculates how many Entities are alive in a List
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="party">List of entities</param>
+        /// <returns>Returns the number of entities alive</returns>
+        public static int GetLivingCount<T>(List<T> party) where T : AEntity
+        {
+            int alive = 0;
+            foreach (T entity in party) if (entity.Hp > 0) alive++;
+            return alive;
         }
 
         /// <summary>
@@ -113,41 +202,7 @@ namespace HeroEngine.Core.UI
                     isUser.Mana = isUser.MaxMana;
                 }
             }
-        }
-
-        /// <summary>
-        /// Creates a Round of combat
-        /// </summary>
-        /// <param name="party">List of AHero that will participate</param>
-        /// <param name="enemies">List of AEnemy that will participate</param>
-        /// <param name="num">Index of selected attacking AHero</param>
-        public static void CombatRound(List<AHero> party, List<AEnemy> enemies, int num)
-        {
-            const int minEnemyVal = 0;
-            int enemyChoosen, heroChoosen;
-
-            ShowCombatParticipants(party, enemies);
-
-            Console.WriteLine(UIConfig.Combat.HeroAttacking, party[num].Name);
-            enemyChoosen = IntParse(minEnemyVal, enemies.Count + 1) - 1;
-
-            if (party[num] is IAbilityUser isUser)
-            {
-                AbilityUserChoosesTypeAttack(isUser, party, enemies, num, enemyChoosen);
-            }
-            else
-            {
-                enemies[enemyChoosen].GetAttacked(party[num].Attack(RandomNumsHelper.GetRandomDamage()));
-            }
-
-            heroChoosen = RandomNumsHelper.GetRandomHero(party);
-            while (party[heroChoosen].DeadState)
-            {
-                heroChoosen = RandomNumsHelper.GetRandomHero(party);
-            }
-            num = CheckEnemyAliveAttack(enemies, num);
-            party[heroChoosen].GetAttacked(enemies[num].Attack(RandomNumsHelper.GetRandomDamage()));
-        }
+        }        
 
         /// <summary>
         /// Asks IAbilityUser what type of attack they wanna do.
