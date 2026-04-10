@@ -46,7 +46,7 @@ namespace HeroEngine.Core.UI
         /// <param name="party">List of Ahero that can be attacked</param>
         /// <param name="num">Index of choosen Ahero</param>
         /// <returns>Same or new index</returns>
-        public static int CheckHeroAliveToGetAttacked(List<AHero> party, int num)
+        private static int CheckHeroAliveToGetAttacked(List<AHero> party, int num)
         {
             if (!party[num].DeadState)
             {
@@ -76,7 +76,7 @@ namespace HeroEngine.Core.UI
         /// <param name="enemies">List of AEnemy participating in the round</param>
         /// <param name="num">Index of hero choosen</param>
         /// <param name="round">Number of the round</param>
-        public static void CombatRound(List<AHero> party, List<AEnemy> enemies, int num, int round)
+        private static void CombatRound(List<AHero> party, List<AEnemy> enemies, int num, int round)
         {
             ShowCombatParticipants(party, enemies);
 
@@ -137,7 +137,7 @@ namespace HeroEngine.Core.UI
         /// <param name="party">List of attacking AEnemy</param>
         /// <param name="num">Index of choosen enemy</param>
         /// <returns>Same or new index</returns>
-        public static int CheckEnemyAliveAttack(List<AEnemy> party, int num)
+        private static int CheckEnemyAliveAttack(List<AEnemy> party, int num)
         {
             if (!party[num].DeadState)
             {
@@ -157,7 +157,7 @@ namespace HeroEngine.Core.UI
         /// <typeparam name="T"></typeparam>
         /// <param name="party">List of entities</param>
         /// <returns>Returns the number of entities alive</returns>
-        public static int GetLivingCount<T>(List<T> party) where T : AEntity
+        private static int GetLivingCount<T>(List<T> party) where T : AEntity
         {
             int alive = 0;
             foreach (T entity in party) if (entity.Hp > 0) alive++;
@@ -170,7 +170,7 @@ namespace HeroEngine.Core.UI
         /// <typeparam name="T">Can be any value that has a DeadState</typeparam>
         /// <param name="party">List of AEntity that will be checked</param>
         /// <returns>true if any member hp > 0. Else returns false</returns>
-        public static bool CheckPartyState<T>(List<T> party) where T : AEntity
+        private static bool CheckPartyState<T>(List<T> party) where T : AEntity
         {
             foreach (T entity in party) if (entity.Hp > 0) return true;
             return false;
@@ -181,7 +181,7 @@ namespace HeroEngine.Core.UI
         /// </summary>
         /// <param name="party">List of AHero that will participate</param>
         /// <param name="enemies">List of AEnemy that will participate</param>
-        public static void ShowCombatParticipants(List<AHero> party, List<AEnemy> enemies)
+        private static void ShowCombatParticipants(List<AHero> party, List<AEnemy> enemies)
         {
             ShowListToSelect(party);
             Console.WriteLine();
@@ -202,7 +202,7 @@ namespace HeroEngine.Core.UI
                     isUser.Mana = isUser.MaxMana;
                 }
             }
-        }        
+        }
 
         /// <summary>
         /// Asks IAbilityUser what type of attack they wanna do.
@@ -213,7 +213,7 @@ namespace HeroEngine.Core.UI
         /// <param name="heroChoosen">The index of the choosen AHero.</param>
         /// <param name="enemyChoosen">The index of the choosen AEnemy.</param>
 
-        public static void AbilityUserChoosesTypeAttack(IAbilityUser isUser, List<AHero> party, List<AEnemy> enemies, int heroChoosen, int enemyChoosen)
+        private static void AbilityUserChoosesTypeAttack(IAbilityUser isUser, List<AHero> party, List<AEnemy> enemies, int heroChoosen, int enemyChoosen)
         {
             const int minOpt = 0;
             int opt, maxOpt = 2;
@@ -244,7 +244,7 @@ namespace HeroEngine.Core.UI
         /// <param name="user">The user of the AAbility</param>
         /// <param name="party">The list of AHero that may be affected</param>
         /// <param name="enemies">The list of AEnemy that may be affected</param>
-        public static void CastSpell(AHero user, List<AHero> party, List<AEnemy> enemies)
+        private static void CastSpell(AHero user, List<AHero> party, List<AEnemy> enemies)
         {
             if (user is IAbilityUser abilityUser)
             {
@@ -266,7 +266,7 @@ namespace HeroEngine.Core.UI
         /// Fills a List of AEnemy.
         /// </summary>
         /// <param name="party">An empty list to save the AEnemy</param>
-        public static void CreateEnemyTeam(List<AEnemy> enemies)
+        private static void CreateEnemyTeam(List<AEnemy> enemies)
         {
             for (int i = 0; i < enemies.Capacity; i++)
             {
@@ -278,7 +278,7 @@ namespace HeroEngine.Core.UI
         /// Generates a random type of AEnemy
         /// </summary>
         /// <returns>Returns an AEnemy</returns>
-        public static AEnemy GetRandomEnemy()
+        private static AEnemy GetRandomEnemy()
         {
             Random rnd = new Random();
             const int minEnemyVal = 0, maxEnemyVal = 4;
@@ -377,7 +377,7 @@ namespace HeroEngine.Core.UI
         /// </summary>
         /// <param name="opt">Int that selects the AAbility</param>
         /// <returns>An AAbiilty</returns>
-        public static AAbility SelectAbility(int opt)
+        private static AAbility SelectAbility(int opt)
         {
             switch (opt)
             {
@@ -399,7 +399,7 @@ namespace HeroEngine.Core.UI
         /// </summary>
         /// <param name="opt">Int that selects the AHero</param>
         /// <returns>An AHero</returns>
-        public static AHero SelectHero(int opt)
+        private static AHero SelectHero(int opt)
         {
             string warTaunt;
 
@@ -422,7 +422,7 @@ namespace HeroEngine.Core.UI
         /// Asks for a name for a AHero
         /// </summary>
         /// <returns>A string that represents the name of the hero</returns>
-        public static string NameHero()
+        private static string NameHero()
         {
             string name;
             Console.WriteLine(UIConfig.Hero.NameHero);
