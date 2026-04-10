@@ -32,7 +32,19 @@ namespace HeroEngine.Core.UI
             public const string ThunderSmash = "{0} channels the storm! {1} lightning damage to all enemies!";
             public const string IronFortress = "{0} builds a wall to help their commrades. +{1} to all heroes";
             public const string SecondWind = "{0} guides the wind. The party heals {1} hp.";
-            public const string WarTaunt = "{0} screams at the enemies. The next hit is stronger!";
+            public const string WarTaunt = "RAAAAH im an useless ability";
+            public const string ChooseAbility = "Choose an ability: ";
+            public const string WhoGetsAbility = "Who will be granted an ability";
+        }
+        public static class Combat
+        {
+            public const string AskAttack = "How do you want to attack";
+            public const string NormalAttack = "1. Normal attack";
+            public const string AblityAttack = "2. Use ability";
+            public const string EnemiesCreated = "Enemies found!";
+            public const string PartyDied = "Your party died";
+            public const string EnemiesDied = "Your enemies died";
+            public const string HeroAttacking = "{0} is attacking. Choose an enemy to attack";
         }
         public static class AbilityError
         {
@@ -41,6 +53,16 @@ namespace HeroEngine.Core.UI
         public static class InputError
         {
             public const string IntError = "Insert a number!";
+            public const string OutOfBounds = "Choose between the options";
+        }
+        public static class Hero
+        {
+            public const string WarScream = "Give a war scream to your warrior";
+            public const string NameHero = "Give a name to the hero";
+        }
+        public static class Menu
+        {
+            public const string PressToContinue = "Press anything to continue..";
         }
     }
 }

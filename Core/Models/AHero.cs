@@ -27,11 +27,11 @@ namespace HeroEngine.Core.Models
             Console.WriteLine($"{Name} cannot learn abilities.");
             Thread.Sleep(1000);
         }
-        public override void CantAttack()
+        protected override void CantAttack()
         {
             Console.WriteLine($"{Name} can't attack because they're dead");
         }
-        public override void CantGetAttacked()
+        protected override void CantGetAttacked()
         {
             Console.WriteLine($"{Name} can't get attacked because they're dead");
         }

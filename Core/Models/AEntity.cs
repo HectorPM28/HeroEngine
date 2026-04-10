@@ -14,6 +14,18 @@ namespace HeroEngine.Core.Models
             set
             {
                 _hp = (value < 0) ? 0 : value;
+                if (value < 0)
+                {
+                    _hp = 0;
+                }else if(_hp > MaxHp)
+                {
+                    _hp = MaxHp;
+                }
+                else
+                {
+                    _hp = value;
+                }
+
                 if (_hp == 0)
                 {
                     DeadState = true;
@@ -32,11 +44,11 @@ namespace HeroEngine.Core.Models
         }
         public abstract int Attack(int damage);
         public abstract void GetAttacked(int damage);
-        public virtual void CantAttack()
+        protected virtual void CantAttack()
         {
             Console.WriteLine($"{GetType().Name} can't attack because they're dead");
         }
-        public virtual void CantGetAttacked()
+        protected virtual void CantGetAttacked()
         {
             Console.WriteLine($"{GetType().Name} can't get attacked because they're dead");
         }
