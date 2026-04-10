@@ -20,20 +20,20 @@ namespace HeroEngine.Core.Models
         }
         public override string ToString()
         {
-            return $"[{this.GetType().Name}] {Name} | Level: {Level} | HP: {Hp}/{MaxHp}";
+            return $"[{GetType().Name}] {Name} | Level: {Level} | HP: {Hp}/{MaxHp}";
         }
         public virtual void AddAbility(AAbility ability)
         {
-            Console.WriteLine($"{Name} cannot learn abilities.");
+            Console.WriteLine(UIConfig.Abilities.CantUseAbilities, Name);
             Thread.Sleep(1000);
         }
-        protected override void CantAttack()
+        protected virtual void CantAttack()
         {
-            Console.WriteLine($"{Name} can't attack because they're dead");
+            Console.WriteLine(UIConfig.Combat.CantAttack, Name);
         }
-        protected override void CantGetAttacked()
+        protected virtual void CantGetAttacked()
         {
-            Console.WriteLine($"{Name} can't get attacked because they're dead");
+            Console.WriteLine(UIConfig.Combat.CantGetattacked, Name);
         }
         public override void GetAttacked(int damage)
         {
@@ -43,7 +43,7 @@ namespace HeroEngine.Core.Models
             }
             else
             {
-                Console.WriteLine($"{Name} gets attacked. Loses {damage} hp");
+                Console.WriteLine(UIConfig.Combat.GetAttacked, Name, damage);
                 Hp -= damage;
             }
         }

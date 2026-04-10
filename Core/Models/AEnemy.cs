@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HeroEngine.Core.UI;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -22,7 +23,7 @@ namespace HeroEngine.Core.Models
             }
             else
             {
-                Console.WriteLine($"{GetType().Name} gets attacked. Loses {damage} hp");
+                Console.WriteLine(UIConfig.Combat.GetAttacked, GetType().Name, damage);
                 Hp -= damage;
             }
         }

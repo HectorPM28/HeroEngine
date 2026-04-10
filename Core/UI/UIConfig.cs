@@ -35,6 +35,7 @@ namespace HeroEngine.Core.UI
             public const string WarTaunt = "RAAAAH im an useless ability";
             public const string ChooseAbility = "Choose an ability: ";
             public const string WhoGetsAbility = "Who will be granted an ability";
+            public const string CantUseAbilities = "{0} cannot learn abilities.";
         }
         public static class Combat
         {
@@ -45,6 +46,9 @@ namespace HeroEngine.Core.UI
             public const string PartyDied = "Your party died";
             public const string EnemiesDied = "Your enemies died";
             public const string HeroAttacking = "{0} is attacking. Choose an enemy to attack";
+            public const string CantAttack = "{0} can't attack because they're dead";
+            public const string CantGetattacked = "{0} can't get attacked because they're dead";
+            public const string GetAttacked = "{0} gets attacked. Loses {1} hp";
         }
         public static class AbilityError
         {

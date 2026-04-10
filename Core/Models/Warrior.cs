@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HeroEngine.Core.UI;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -42,7 +43,7 @@ namespace HeroEngine.Core.Models
             else
             {
                 int reducedDamage = (damage - Armor < 0) ? 0 : damage - Armor;
-                Console.WriteLine($"{Name} gets attacked. Loses {reducedDamage} hp");
+                Console.WriteLine(UIConfig.Combat.GetAttacked, Name, reducedDamage);
                 Hp -= reducedDamage;
             }
         }

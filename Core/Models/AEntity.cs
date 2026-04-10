@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HeroEngine.Core.UI;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -46,11 +47,11 @@ namespace HeroEngine.Core.Models
         public abstract void GetAttacked(int damage);
         protected virtual void CantAttack()
         {
-            Console.WriteLine($"{GetType().Name} can't attack because they're dead");
+            Console.WriteLine(UIConfig.Combat.CantAttack, GetType().Name);
         }
         protected virtual void CantGetAttacked()
         {
-            Console.WriteLine($"{GetType().Name} can't get attacked because they're dead");
+            Console.WriteLine(UIConfig.Combat.CantGetattacked, GetType().Name);
         }
     }
 }
