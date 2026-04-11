@@ -53,6 +53,6 @@
 |----------------|-----------|----------------|-|-|
 | normal | 1 | 1 | Calculates a damage and attacks the enemy | Calculate a damage and attacks the enemy |
 | normal | 1 | 2 | Mage chooses an ability to use | Mage chooses an ability to use |
-| error | a | "Insert a real number!| "Insert a real number" |
+| error | a | 1| "Insert a real number!| "Insert a real number" |
 | error | 0 | 1 | "Choose between the options" | "Choose between the options" |
 | error | -1 | 1 | "Choose between the options" | "Choose between the options" |
