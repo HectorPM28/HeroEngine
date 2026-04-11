@@ -37,7 +37,8 @@ namespace HeroEngine.Core.UI
                 round++;
             } while (CheckPartyState(party) && CheckPartyState(enemies));
 
-            Console.WriteLine(CheckPartyState(party) ? UIConfig.Combat.PartyDied : UIConfig.Combat.EnemiesDied);
+            Console.WriteLine(CheckPartyState(party) ? UIConfig.Combat.EnemiesDied : UIConfig.Combat.PartyDied);
+            CombatStats.ShowBattleStats();
         }
 
         /// <summary>
@@ -54,19 +55,6 @@ namespace HeroEngine.Core.UI
             }
 
             return RandomNumsHelper.GetRandomHero(party);
-        }
-
-        /// <summary>
-        /// Gives the given data to a .txt file to create a bat log
-        /// </summary>
-        /// <param name="party">List of AHero participating in battle</param>
-        /// <param name="enemies">List of AEnemy participating in battle</param>
-        /// <param name="round">Number of the round</param>
-        /// <param name="textHero">How hero acted towards the enemy</param>
-        /// <param name="textEnemy">How enemy acted towards the hero</param>
-        public static void GiveDataToLog(List<AHero> party, List<AEnemy> enemies, int round, string textHero, string textEnemy)
-        {
-            CombatLog.InsertInfoInLog(textHero, textEnemy, round, GetLivingCount(party), GetLivingCount(enemies));
         }
 
         /// <summary>
@@ -90,8 +78,8 @@ namespace HeroEngine.Core.UI
             party[heroChoosen].GetAttacked(enemies[num].Attack(damageEnemy));
 
             string textEnemy = $"[{enemies[num].GetType().Name}] > {party[num].Name} -> {damageEnemy}dmg";
-
-            GiveDataToLog(party, enemies, round, textHero, textEnemy);
+ 
+            CombatLog.InsertInfoInLog(textHero, textEnemy, round, GetLivingCount(party), GetLivingCount(enemies));
         }
 
         /// <summary>
@@ -114,6 +102,13 @@ namespace HeroEngine.Core.UI
 
             int damageHero = RandomNumsHelper.GetRandomDamage();
             enemies[enemyChoosen].GetAttacked(party[num].Attack(damageHero));
+            CombatStats.CalculateBattleStats(damageHero, num);
+
+            if (enemies[enemyChoosen].DeadState && CombatStats.FirstEnemyDead == null)
+            {
+                CombatStats.FirstEnemyDead = enemies[enemyChoosen];
+            }
+
             return $"[{party[num].GetType().Name}] {party[num].Name} > {enemies[enemyChoosen]} -> {damageHero}dmg";
         }
 
@@ -127,8 +122,10 @@ namespace HeroEngine.Core.UI
             var livingIndices = party.Select((h, i) => new { h, i })
                                      .Where(x => !x.h.DeadState)
                                      .Select(x => x.i).ToList();
+            Random rnd = new Random();
+            int randomIndex = rnd.Next(0, livingIndices.Count);
 
-            return livingIndices[RandomNumsHelper.GetRandomHero(party)];
+            return livingIndices[randomIndex];
         }
 
         /// <summary>
@@ -230,7 +227,9 @@ namespace HeroEngine.Core.UI
             switch (opt)
             {
                 case 1:
-                    enemies[enemyChoosen].GetAttacked(party[heroChoosen].Attack(RandomNumsHelper.GetRandomDamage()));
+                    int damageHero = RandomNumsHelper.GetRandomDamage();
+                    enemies[enemyChoosen].GetAttacked(party[heroChoosen].Attack(damageHero));
+                    CombatStats.CalculateBattleStats(damageHero, heroChoosen);
                     break;
                 case 2:
                     CastSpell(party[heroChoosen], party, enemies);
@@ -327,6 +326,10 @@ namespace HeroEngine.Core.UI
             {
                 UIConfig.ShowHeroes();
                 party.Add(SelectHero(IntParse(minHeroVal, maxHeroVal)));
+            }
+            for (int i = 0; i < party.Count; i++)
+            {
+                CombatStats.party.Add(0);
             }
         }
 

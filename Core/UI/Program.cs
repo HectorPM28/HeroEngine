@@ -8,10 +8,10 @@ public class Program
 {
     public static void Main()
     {
-        const int minMenuVal = 0, maxMenuVal = 5;
+        const int minMenuVal = 0, maxMenuVal = 5, maxHeroNum = 3;
         int menuSelected = 0;
 
-        List<AHero> party = new List<AHero>(3);
+        List<AHero> party = new List<AHero>(maxHeroNum);
         Usables.CreateParty(party);
         Console.Clear();
         do
