@@ -9,13 +9,14 @@ namespace HeroEngine.Core.Models
     public class SecondWind: AAbility
     {
         private int _heal = 30;
-        public SecondWind() : base("Second Wind", RandomRarityHelper.GetRandomRarity(), EAbilityType.Attack, 10)
+        public SecondWind() : base("Second Wind", RandomNumsHelper.GetRandomRarity(), EAbilityType.Attack, 10)
         {
         }
-        public override void Execute(AHero hero)
+        public override void Execute(List<AHero> party, List<AEnemy> enemies, AHero hero)
         {
             int newHeal = _heal + (int)Rarity;
             Console.WriteLine(UIConfig.Abilities.SecondWind, hero.Name, newHeal);
+            party.ForEach(e => e.Hp += newHeal);
         }
     }
 }

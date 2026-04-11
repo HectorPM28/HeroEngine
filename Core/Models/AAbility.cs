@@ -24,7 +24,13 @@ namespace HeroEngine.Core.Models
             Cost = cost + (int) rarity;
         }
 
-        public abstract void Execute(AHero hero);
+        /// <summary>
+        /// Executes an AAbility
+        /// </summary>
+        /// <param name="party">List of AHero that may be affected</param>
+        /// <param name="enemies">List of AEnemy that may be affected</param>
+        /// <param name="hero">Hero that executes the ability</param>
+        public abstract void Execute(List<AHero> party, List<AEnemy>enemies, AHero hero);
         public override string ToString()
         {
             return $"[{Rarity}] {Name} | Type: {Type} | Cost: {Cost}";

@@ -1,22 +1,22 @@
-﻿using HeroEngine.Core.UI;
+﻿using HeroEngine.Core.Models.Interfaces;
+using HeroEngine.Core.UI;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace HeroEngine.Core.Models
 {
-    public class Mage: AHero
+    public class Mage: AHero, IAbilityUser
     {       
         public int MaxMana { get; set; }
         public int Mana { get; set; }
         public int ArcaneLevel { get; set; }
         public Dictionary<string, AAbility> Abilities { get; set; } = [];
+        public static int BaseMageHp = 100;
 
-        public Mage (string name, int level, int mana, int arcaneLevel): base(name, level)
+        public Mage (string name,int hp, int level, int mana, int arcaneLevel): base(name, hp, level)
         {
-            MaxMana = mana + level;
-            MaxHp += level;
-            Hp += level;
+            MaxMana = mana + level;            
             Mana = mana + level;
             ArcaneLevel = arcaneLevel;
         }
@@ -27,7 +27,7 @@ namespace HeroEngine.Core.Models
         }
         public override int Attack(int damage)
         {
-            if (Hp < 0)
+            if (Hp <= 0)
             {
                 CantAttack();
                 return 0;
@@ -36,21 +36,8 @@ namespace HeroEngine.Core.Models
             {
                 return damage * 2;
             }
-        }
-
-        public override void GetAttacked(int damage)
-        {
-            if (Hp < 0)
-            {
-                CantGetAttacked();
-            }
-            else
-            {
-                Console.WriteLine($"{Name} gets attacked. Loses {damage} hp");
-                Hp -= damage;
-            }
-        }
-        public void AddAbility(AAbility ability)
+        }        
+        public override void AddAbility(AAbility ability)
         {
             if (Abilities.ContainsKey(ability.Name))
             {
@@ -62,15 +49,14 @@ namespace HeroEngine.Core.Models
                 Abilities.Add(ability.Name, ability);
             }
         }
-        public void UseAbility(AAbility ability)
-        {
-            Abilities[ability.Name].Execute(this);
-        }
         public void ShowAbilities()
         {
             List<AAbility> sortedList = Abilities.Values.OrderByDescending(num => num.Rarity).ToList();
 
-            sortedList.ForEach(e => Console.WriteLine(e.ToString()));
+            for (int i = 0; i < sortedList.Count; i++)
+            {
+                Console.WriteLine($"{i}. {sortedList[i].ToString()}");
+            }
         }
     }
 }
