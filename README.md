@@ -50,6 +50,7 @@
 # Mage is attacking
 
 | Tipus | enemyChoosen | TypeAttack |Expected | Result |
+|----------------|-----------|----------------|-|-|
 | normal | 1 | 1 | Calculates a damage and attacks the enemy | Calculate a damage and attacks the enemy |
 | normal | 1 | 2 | Mage chooses an ability to use | Mage chooses an ability to use |
 | error | a | "Insert a real number!| "Insert a real number" |
