@@ -96,8 +96,8 @@ namespace HeroEngine.Core.UI
 
             if (party[num] is IAbilityUser isUser)
             {
-                AbilityUserChoosesTypeAttack(isUser, party, enemies, num, enemyChoosen);
-                return $"{party[num].Name} used an ability";
+                string mageTurn = AbilityUserChoosesTypeAttack(isUser, party, enemies, num, enemyChoosen);
+                return mageTurn;
             }
 
             int damageHero = RandomNumsHelper.GetRandomDamage();
@@ -210,7 +210,7 @@ namespace HeroEngine.Core.UI
         /// <param name="heroChoosen">The index of the choosen AHero.</param>
         /// <param name="enemyChoosen">The index of the choosen AEnemy.</param>
 
-        private static void AbilityUserChoosesTypeAttack(IAbilityUser isUser, List<AHero> party, List<AEnemy> enemies, int heroChoosen, int enemyChoosen)
+        private static string AbilityUserChoosesTypeAttack(IAbilityUser isUser, List<AHero> party, List<AEnemy> enemies, int heroChoosen, int enemyChoosen)
         {
             const int minOpt = 0;
             int opt, maxOpt = 2;
@@ -230,11 +230,13 @@ namespace HeroEngine.Core.UI
                     int damageHero = RandomNumsHelper.GetRandomDamage();
                     enemies[enemyChoosen].GetAttacked(party[heroChoosen].Attack(damageHero));
                     CombatStats.CalculateBattleStats(damageHero, heroChoosen);
-                    break;
+                    return $"[{party[heroChoosen].GetType().Name}] {party[heroChoosen].Name} > {enemies[enemyChoosen]} -> {damageHero}dmg";
                 case 2:
                     CastSpell(party[heroChoosen], party, enemies);
-                    break;
-            }
+                    return $"{party[heroChoosen].Name} used an ability";
+                default:
+                    return "Mage attacked"
+;            }
         }
 
         /// <summary>
