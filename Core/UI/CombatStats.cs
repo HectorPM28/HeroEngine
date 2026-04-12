@@ -9,12 +9,12 @@ namespace HeroEngine.Core.UI
     {
         public static AEnemy FirstEnemyDead;
         public static int TotalDamage = 0;
-        public static List<int> party = new List<int>();
+        public static List<int> partyDamage = new List<int>();
 
         public static void CalculateBattleStats(int damage, int heroDealer)
         {
             TotalDamage += damage;
-            party[heroDealer] += damage;
+            partyDamage[heroDealer] += damage;
         }
 
         private static int GetBestHeroIndex()
@@ -22,11 +22,11 @@ namespace HeroEngine.Core.UI
             int recordTotal = -1;
             int indiceDelMejor = 0;
 
-            for (int i = 0; i < party.Count; i++)
+            for (int i = 0; i < partyDamage.Count; i++)
             {
-                if (party[i] > recordTotal)
+                if (partyDamage[i] > recordTotal)
                 {
-                    recordTotal = party[i];
+                    recordTotal = partyDamage[i];
                     indiceDelMejor = i;
                 }
             }
@@ -43,7 +43,7 @@ namespace HeroEngine.Core.UI
         {
             FirstEnemyDead = null;
             TotalDamage = 0;
-            party.ForEach(e => e = 0);
+            partyDamage.ForEach(e => e = 0);
         }
     }
 }

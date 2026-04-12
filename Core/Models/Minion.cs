@@ -6,7 +6,7 @@ namespace HeroEngine.Core.Models
 {
     public class Minion : AEnemy
     {
-        public static int MinionHp = 50;
+        public static int MinionBaseHp = 50;
 
         public Minion(int hp) : base(hp)
         {
