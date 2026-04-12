@@ -1,5 +1,10 @@
 # HeroEngine
 
+# UML
+
+<img width="1403" height="1140" alt="Captura de pantalla 2026-04-12 134058" src="https://github.com/user-attachments/assets/f078daa3-7334-4b67-b5fa-af6f41225672" />
+
+
 # JOCS DE PROVES
 
 # Party Creation
