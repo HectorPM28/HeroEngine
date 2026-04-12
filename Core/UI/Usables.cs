@@ -288,9 +288,9 @@ namespace HeroEngine.Core.UI
             switch (enemyCreated)
             {
                 case 1:
-                    return new Minion(Minion.MinionHp);
+                    return new Minion(Minion.MinionBaseHp);
                 case 2:
-                    return new Elites(Elites.EliteHp);
+                    return new Elites(Elites.EliteBaseHp);
                 case 3:
                     return new Boss(Boss.BossesHp);
                 default:
@@ -331,7 +331,7 @@ namespace HeroEngine.Core.UI
             }
             for (int i = 0; i < party.Count; i++)
             {
-                CombatStats.party.Add(0);
+                CombatStats.partyDamage.Add(0);
             }
         }
 
